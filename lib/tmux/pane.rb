@@ -1,3 +1,5 @@
+require 'shellwords'
+
 module Tmux
   # A {Window window} occupies the entire
   # screen and may be split into rectangular {Pane panes}, each of
@@ -373,7 +375,7 @@ module Tmux
       flags = split_or_join_flags(args)
 
       flags << "-t #{identifier}"
-      flags << '"' + args[:command] + '"' if args[:command] # TODO escape
+      flags << "\"#{args[:command].shelljoin}\"" if args[:command]
 
       server.invoke_command "split-window #{flags.join(" ")} "
       if args[:make_active]

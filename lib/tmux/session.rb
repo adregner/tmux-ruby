@@ -1,3 +1,5 @@
+require 'shellwords'
+
 module Tmux
   # A session is a single collection of pseudo terminals under the
   # management of {Tmux tmux}. Each session has one or more {Window
@@ -52,7 +54,7 @@ module Tmux
                else
                  "-t #{identifier}"
                end
-      flags << args[:command] if args[:command]
+      flags << "\"#{args[:command].shelljoin}\"" if args[:command]
 
       @server.invoke_command "new-window #{flags.join(" ")}"
       new_window = current_window
